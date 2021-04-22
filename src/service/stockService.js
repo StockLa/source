@@ -1,6 +1,6 @@
 const {Stock} = require('@model');
 const {interval, Observable, Subject, combineLatest} = require('rxjs');
-const {switchMap} = require('rxjs/operators');
+const {switchMap, map} = require('rxjs/operators');
 const config = require('config');
 
 class StockService {
@@ -27,7 +27,8 @@ class StockService {
                 return stock;
               })());
             });
-          })).subscribe(subject);
+          }),
+      ).subscribe(subject);
     }
     return this.stockSubscriptions[name];
   }

@@ -36,4 +36,11 @@ module.exports = class Stock {
       price: round(this.price),
     });
   }
+
+  toJSON() {
+    return {
+      name: this.name,
+      price: round(this.price),
+    };
+  }
 };
