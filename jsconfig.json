@@ -9,6 +9,7 @@
     "paths": {
       "@controller/*": ["src/controller/*"],
       "@service/*": ["src/service/*"],
+      "@builder/*": ["src/builder/*"],
       "@model/*": ["src/model/*"],
       "@logger": ["src/util/logger"],
       "@src/*": ["src/*"]

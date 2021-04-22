@@ -12,21 +12,22 @@ class StockService {
 
   getStocks(stocks) {
     const all = stocks.map( (name) => this.getStock(name));
-    return combineLatest(all).pipe((all) => all);
+    return combineLatest(all);
   }
 
   getStock(name) {
     if (!this.stockSubscriptions[name]) {
-      const subject = this.stockSubscriptions[name] = new Subject(); ;
-      let stock = Stock.create(name);
-      this.timer$.pipe(switchMap(() => {
-        return new Observable((observer) => {
-          observer.next((() => {
-            stock = stock.delta();
-            return stock;
-          })());
-        });
-      })).subscribe(subject);
+      const subject = this.stockSubscriptions[name] = new Subject();
+      this.timer$.pipe(
+          switchMap(() => {
+            return new Observable((observer) => {
+              let stock = Stock.create(name);
+              observer.next((() => {
+                stock = stock.delta();
+                return stock;
+              })());
+            });
+          })).subscribe(subject);
     }
     return this.stockSubscriptions[name];
   }
