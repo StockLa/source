@@ -1,0 +1,18 @@
+{
+  "typeAcquisition": {
+    "include": [ "jest" ]
+  },
+  "compilerOptions": {
+    "target": "es2017",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "@controller/*": ["src/controller/*"],
+      "@service/*": ["src/service/*"],
+      "@model/*": ["src/model/*"],
+      "@logger": ["src/util/logger"],
+      "@src/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
