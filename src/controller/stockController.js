@@ -16,7 +16,6 @@ module.exports = {
         map((data) => buildOkResponse(data)),
     ).subscribe({
       next(response) {
-        logger.info('next', {response});
         res.write(JSON.stringify(response));
       },
       complete() {

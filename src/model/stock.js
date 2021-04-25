@@ -12,21 +12,24 @@ function isGrowth() {
 
 module.exports = class Stock {
   static create(name) {
-    return new Stock(name, 100 * Math.random());
+    return new Stock(name, 10);
   }
 
-  constructor(name, price) {
+  constructor(name, price, change) {
     this.name = name;
     this.price = price;
+    this.change = change;
+    this.dateTime = Date.now();
+    this.deltas = [0.1, 0.2, 0.3, 0.4];
   }
 
-
   delta() {
-    const delta = this.price * Math.random();
+    const delta = this.price *
+      this.deltas[Math.floor(Math.random() * this.deltas.length)];
     if (isZero(this.price) || isGrowth()) {
-      return new Stock(this.name, this.price + delta);
+      return new Stock(this.name, this.price + delta, delta);
     } else {
-      return new Stock(this.name, this.price - delta);
+      return new Stock(this.name, this.price - delta, -delta);
     }
   }
 
@@ -34,6 +37,8 @@ module.exports = class Stock {
     return JSON.stringify({
       name: this.name,
       price: round(this.price),
+      change: round(this.change),
+      dateTime: this.dateTime,
     });
   }
 
@@ -41,6 +46,8 @@ module.exports = class Stock {
     return {
       name: this.name,
       price: round(this.price),
+      change: round(this.change),
+      dateTime: this.dateTime,
     };
   }
 };

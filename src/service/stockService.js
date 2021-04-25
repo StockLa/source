@@ -1,7 +1,11 @@
 const {Stock} = require('@model');
-const {interval, Observable, Subject, combineLatest} = require('rxjs');
-const {switchMap, map} = require('rxjs/operators');
+const {interval, Observable, Subject, combineLatest, generate} = require('rxjs');
+const {tap, switchMap, map, flatMap} = require('rxjs/operators');
 const config = require('config');
+
+function newStock(name) {
+  return generate(new Stock(name), () => true, (stock) => stock.delta());
+}
 
 class StockService {
   constructor(timeInterval) {
@@ -18,16 +22,9 @@ class StockService {
   getStock(name) {
     if (!this.stockSubscriptions[name]) {
       const subject = this.stockSubscriptions[name] = new Subject();
+      const stock = Stock.create(name);
       this.timer$.pipe(
-          switchMap(() => {
-            return new Observable((observer) => {
-              let stock = Stock.create(name);
-              observer.next((() => {
-                stock = stock.delta();
-                return stock;
-              })());
-            });
-          }),
+          map(() => stock.delta()),
       ).subscribe(subject);
     }
     return this.stockSubscriptions[name];
