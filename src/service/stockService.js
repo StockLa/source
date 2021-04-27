@@ -12,7 +12,14 @@ class StockService {
 
   getStocks(stocks) {
     const all = stocks.map((name) => this.getStock(name));
-    return combineLatest(all);
+    return combineLatest(all).pipe(
+        map((all) => {
+          return all.reduce((map, stock) => {
+            map[stock.name] = stock;
+            return map;
+          }, {});
+        }),
+    );
   }
 
   getStock(name) {
